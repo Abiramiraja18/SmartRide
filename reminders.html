@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartBus - Reminders</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f2f4f8;
+}
+
+/* NAVBAR */
+nav{
+    background:#0e2a47;
+    color:white;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* HEADER SECTION */
+.header{
+    background:#243b64;
+    color:white;
+    padding:25px 20px;
+}
+
+.header h2{
+    margin-bottom:5px;
+}
+
+/* FORM SECTION */
+.form-section{
+    background:white;
+    margin:20px;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.form-section input{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    background:#1cc5b7;
+    border:none;
+    border-radius:8px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* REMINDER LIST */
+.reminder-list{
+    margin:20px;
+}
+
+.reminder-card{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+}
+
+.reminder-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.icon{
+    background:#1cc5b7;
+    color:white;
+    padding:12px;
+    border-radius:50%;
+}
+
+.time{
+    color:#666;
+    font-size:14px;
+}
+
+.delete{
+    color:red;
+    cursor:pointer;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:white;
+    display:flex;
+    justify-content:space-around;
+    padding:12px 0;
+    box-shadow:0 -2px 8px rgba(0,0,0,0.1);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <h3><i class="fa-solid fa-bus"></i> SmartBus</h3>
+    <span></span>
+</nav>
+
+<!-- HEADER -->
+<div class="header">
+    <h2>Reminders</h2>
+    <p>Never miss your bus again</p>
+</div>
+
+<!-- FORM -->
+<div class="form-section">
+
+    <input type="text" id="route" placeholder="Bus route (e.g. Route 42A)">
+    <input type="time" id="time">
+
+    <button class="btn" onclick="addReminder()">
+        <i class="fa-solid fa-plus"></i> Add Reminder
+    </button>
+
+</div>
+
+<!-- REMINDER LIST -->
+<div class="reminder-list" id="reminderList"></div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+
+    <div onclick="goHome()" style="text-align:center; cursor:pointer;">
+        <i class="fa-solid fa-house"></i>
+        <p style="font-size:12px;">Home</p>
+    </div>
+
+    <div onclick="goRoutes()" style="text-align:center; cursor:pointer;">
+        <i class="fa-solid fa-route"></i>
+        <p style="font-size:12px;">Routes</p>
+    </div>
+
+    <div onclick="goComplaints()" style="text-align:center; cursor:pointer;">
+        <i class="fa-solid fa-comment"></i>
+        <p style="font-size:12px;">Complaints</p>
+    </div>
+
+    <div style="color:#1cc5b7; text-align:center;">
+        <i class="fa-solid fa-bell"></i>
+        <p style="font-size:12px;">Reminders</p>
+    </div>
+
+</div>
+
+<script>
+    function goHome(){
+    window.location.href="home.html";
+}
+
+function goRoutes(){
+    window.location.href="routes.html";
+}
+
+function goReminders(){
+    window.location.href="reminders.html";
+}
+
+function goComplaints(){
+    window.location.href="complaints.html";
+}
+
+
+function addReminder(){
+
+    const route = document.getElementById("route").value;
+    const time = document.getElementById("time").value;
+
+    if(route === "" || time === ""){
+        alert("Please enter route and time");
+        return;
+    }
+
+    const list = document.getElementById("reminderList");
+
+    const card = document.createElement("div");
+    card.className = "reminder-card";
+
+    card.innerHTML = `
+        <div class="reminder-left">
+            <div class="icon">
+                <i class="fa-solid fa-bell"></i>
+            </div>
+            <div>
+                <strong>${route}</strong>
+                <div class="time">${time}</div>
+            </div>
+        </div>
+        <div class="delete" onclick="this.parentElement.remove()">
+            <i class="fa-solid fa-trash"></i>
+        </div>
+    `;
+
+    list.appendChild(card);
+
+    document.getElementById("route").value = "";
+    document.getElementById("time").value = "";
+}
+
+function goHome(){
+    window.location.href = "home.html"; // change if your home file name is different
+}
+
+function goRoutes(){
+    window.location.href = "routes.html";
+}
+
+</script>
+
+</body>
+</html>

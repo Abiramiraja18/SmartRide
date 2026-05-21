@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartBus - Routes</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f2f4f8;
+    padding-bottom:90px;
+}
+
+/* NAVBAR */
+nav{
+    background:#0e2a47;
+    color:white;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.back-btn{
+    cursor:pointer;
+}
+
+/* MAP */
+.map{
+    height:250px;
+    margin:20px;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* SEARCH BOX */
+.search-box{
+    background:white;
+    margin:20px;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.input-group{
+    margin-bottom:15px;
+}
+
+.input-group input{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+    outline:none;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    background:#1cc5b7;
+    border:none;
+    border-radius:8px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* RESULTS */
+.results{
+    margin:20px;
+}
+
+.route-card{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:10px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+}
+
+.route-card h4{
+    margin-bottom:5px;
+}
+
+.route-card p{
+    color:#666;
+    font-size:14px;
+}
+
+/* BOTTOM NAVIGATION */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:white;
+    display:flex;
+    justify-content:space-around;
+    padding:12px 0;
+    box-shadow:0 -2px 8px rgba(0,0,0,0.1);
+    z-index:1000;
+}
+
+.nav-item{
+    flex:1;
+    text-align:center;
+    cursor:pointer;
+}
+
+.nav-item i{
+    display:block;
+    font-size:20px;
+    margin-bottom:3px;
+}
+
+.nav-item p{
+    font-size:13px;
+}
+
+.active{
+    color:#1cc5b7;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+
+    <span class="back-btn" onclick="goBack()">
+        <i class="fa-solid fa-arrow-left"></i>
+    </span>
+
+    <h3>Find Your Route</h3>
+
+    <span></span>
+
+</nav>
+
+<!-- MAP -->
+<div class="map">
+
+    <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15554.548408551594!2d77.5946!3d12.9716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c8f6f6f5%3A0x7f1f0ed0fdd3f5e1!2sBengaluru!5e0!3m2!1sen!2sin!4v1690000000000"
+        width="100%"
+        height="100%"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy">
+
+    </iframe>
+
+</div>
+
+<!-- SEARCH -->
+<div class="search-box">
+
+    <div class="input-group">
+        <input type="text" id="currentLocation" placeholder="Enter your current location">
+    </div>
+
+    <div class="input-group">
+        <input type="text" id="destination" placeholder="Enter destination">
+    </div>
+
+    <button class="btn" onclick="showRoutes()">
+        Search Routes
+    </button>
+
+</div>
+
+<!-- RESULTS -->
+<div class="results" id="results"></div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+
+    <div class="nav-item" onclick="goHome()">
+        <i class="fa-solid fa-house"></i>
+        <p>Home</p>
+    </div>
+
+    <div class="nav-item active" onclick="goRoutes()">
+        <i class="fa-solid fa-route"></i>
+        <p>Routes</p>
+    </div>
+
+    <div class="nav-item" onclick="goComplaints()">
+        <i class="fa-solid fa-comment"></i>
+        <p>Complaints</p>
+    </div>
+
+    <div class="nav-item" onclick="goReminders()">
+        <i class="fa-solid fa-bell"></i>
+        <p>Reminders</p>
+    </div>
+
+</div>
+
+<script>
+
+function goHome(){
+    window.location.href = "home.html";
+}
+
+function goRoutes(){
+    window.location.href = "routes.html";
+}
+
+function goComplaints(){
+    window.location.href = "complaints.html";
+}
+
+function goReminders(){
+    window.location.href = "reminders.html";
+}
+
+function goBack(){
+    window.location.href = "home.html";
+}
+
+function showRoutes(){
+
+    let currentLocation = document.getElementById("currentLocation").value;
+    let destination = document.getElementById("destination").value;
+
+    if(currentLocation === "" || destination === ""){
+        alert("Please enter both locations");
+        return;
+    }
+
+    const results = document.getElementById("results");
+
+    results.innerHTML = `
+
+        <div class="route-card">
+            <h4>Route 1 - Express</h4>
+            <p>From: ${currentLocation}</p>
+            <p>To: ${destination}</p>
+            <p>Duration: 25 mins</p>
+            <p>Fare: ₹20</p>
+        </div>
+
+        <div class="route-card">
+            <h4>Route 2 - Local</h4>
+            <p>From: ${currentLocation}</p>
+            <p>To: ${destination}</p>
+            <p>Duration: 35 mins</p>
+            <p>Fare: ₹15</p>
+        </div>
+
+        <div class="route-card">
+            <h4>Route 3 - AC Bus</h4>
+            <p>From: ${currentLocation}</p>
+            <p>To: ${destination}</p>
+            <p>Duration: 30 mins</p>
+            <p>Fare: ₹30</p>
+        </div>
+
+    `;
+}
+
+</script>
+
+</body>
+</html>

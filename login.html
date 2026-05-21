@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SmartBus - Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(rgba(14,42,71,0.95), rgba(14,42,71,0.95)),
+                        url('https://images.unsplash.com/photo-1570125909232-eb263c188f7e');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: white;
+            width: 350px;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .login-container h2 {
+            margin-bottom: 10px;
+            color: #0e2a47;
+        }
+
+        .login-container p {
+            font-size: 14px;
+            margin-bottom: 25px;
+            color: #555;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 40px 12px 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .input-group i {
+            position: absolute;
+            right: 12px;
+            top: 12px;
+            color: #888;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #1cc5b7;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #16a89b;
+        }
+
+        .links {
+            margin-top: 15px;
+            font-size: 13px;
+        }
+
+        .links a {
+            color: #1cc5b7;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2><i class="fa-solid fa-bus"></i> SmartBus</h2>
+        <p>Login to continue</p>
+
+        <div class="error" id="errorMsg">Invalid Username or Password</div>
+
+        <div class="input-group">
+            <input type="text" id="username" placeholder="Username">
+            <i class="fa-solid fa-user"></i>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" placeholder="Password">
+            <i class="fa-solid fa-lock"></i>
+        </div>
+
+        <button class="btn" onclick="login()">Login</button>
+
+        <div class="links">
+            <p>Don't have an account? <a onclick="register()">Register</a></p>
+        </div>
+    </div>
+
+    <script>
+        function login() {
+           let username = document.getElementById("username").value;
+           let password = document.getElementById("password").value;
+
+           let savedUser = JSON.parse(localStorage.getItem("smartbusUser"));
+
+           if (
+              (username === "admin" && password === "1234") ||
+              (savedUser && username === savedUser.username && password === savedUser.password)
+        ) {
+              localStorage.setItem("loggedIn", "true");
+              window.location.href = "home.html";
+          } else {
+             document.getElementById("errorMsg").style.display = "block";
+          }
+      }
+
+        function register() {
+             window.location.href = "register.html";
+        }
+
+        // Prevent access if not logged in (use this in other pages)
+        if (window.location.pathname.includes("home.html")) {
+            if (localStorage.getItem("loggedIn") !== "true") {
+                window.location.href = "login.html";
+            }
+        }
+    </script>
+
+</body>
+</html>

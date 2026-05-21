@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartBus - Complaints</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f2f4f8;
+}
+
+/* NAVBAR */
+nav{
+    background:#0e2a47;
+    color:white;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* HEADER */
+.header{
+    background:#243b64;
+    color:white;
+    padding:25px 20px;
+}
+
+.header h2{
+    margin-bottom:5px;
+}
+
+/* FORM */
+.form-section{
+    background:white;
+    margin:20px;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.form-section input,
+.form-section textarea{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+.form-section textarea{
+    resize:none;
+    height:100px;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    background:#1cc5b7;
+    border:none;
+    border-radius:8px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+/* COMPLAINT LIST */
+.complaint-list{
+    margin:20px;
+}
+
+.complaint-card{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:10px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+    position:relative;
+}
+
+.status{
+    position:absolute;
+    top:15px;
+    right:15px;
+    background:#e0e0e0;
+    padding:5px 10px;
+    border-radius:15px;
+    font-size:12px;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:white;
+    display:flex;
+    justify-content:space-around;
+    padding:12px 0;
+    box-shadow:0 -2px 8px rgba(0,0,0,0.1);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav>
+    <h3><i class="fa-solid fa-bus"></i> SmartBus</h3>
+    <span></span>
+</nav>
+
+<!-- HEADER -->
+<div class="header">
+    <h2>Complaint Box</h2>
+    <p>Report issues with bus services</p>
+</div>
+
+<!-- FORM -->
+<div class="form-section">
+
+    <input type="text" id="name" placeholder="Your name">
+    <input type="text" id="subject" placeholder="Subject">
+    <textarea id="description" placeholder="Describe your complaint..."></textarea>
+
+    <button class="btn" onclick="submitComplaint()">
+        <i class="fa-solid fa-paper-plane"></i> Submit Complaint
+    </button>
+
+</div>
+
+<!-- COMPLAINT LIST -->
+<div class="complaint-list" id="complaintList"></div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+
+    <div onclick="goHome()" style="text-align:center;">
+        <i class="fa-solid fa-house"></i>
+        <p style="font-size:12px;">Home</p>
+    </div>
+
+    <div onclick="goRoutes()" style="text-align:center;">
+        <i class="fa-solid fa-route"></i>
+        <p style="font-size:12px;">Routes</p>
+    </div>
+
+    <div style="color:#1cc5b7; text-align:center;">
+        <i class="fa-solid fa-comment"></i>
+        <p style="font-size:12px;">Complaints</p>
+    </div>
+
+    <div onclick="goReminders()" style="text-align:center;">
+        <i class="fa-solid fa-bell"></i>
+        <p style="font-size:12px;">Reminders</p>
+    </div>
+
+</div>
+
+<script>
+    function goHome(){
+    window.location.href="home.html";
+}
+
+function goRoutes(){
+    window.location.href="routes.html";
+}
+
+function goReminders(){
+    window.location.href="reminders.html";
+}
+
+function goComplaints(){
+    window.location.href="complaints.html";
+}
+
+
+function submitComplaint(){
+
+    const name = document.getElementById("name").value;
+    const subject = document.getElementById("subject").value;
+    const description = document.getElementById("description").value;
+
+    if(name === "" || subject === "" || description === ""){
+        alert("Please fill all fields");
+        return;
+    }
+
+    const list = document.getElementById("complaintList");
+
+    const card = document.createElement("div");
+    card.className = "complaint-card";
+
+    card.innerHTML = `
+        <div class="status">Pending</div>
+        <h4>${subject}</h4>
+        <p>${description}</p>
+        <small>By ${name} - ${new Date().toLocaleDateString()}</small>
+    `;
+
+    list.prepend(card);
+
+    document.getElementById("name").value = "";
+    document.getElementById("subject").value = "";
+    document.getElementById("description").value = "";
+}
+
+function goHome(){
+    window.location.href="home.html";
+}
+
+function goRoutes(){
+    window.location.href="routes.html";
+}
+
+function goReminders(){
+    window.location.href="reminders.html";
+}
+
+</script>
+
+</body>
+</html>

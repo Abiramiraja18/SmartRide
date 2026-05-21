@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartBus - Edit Profile</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f2f4f8;
+}
+
+/* NAVBAR */
+nav{
+    background:#0e2a47;
+    color:white;
+    padding:15px 20px;
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+/* FORM */
+.profile-box{
+    background:white;
+    margin:20px;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.profile-box input,
+.profile-box select{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+.btn{
+    width:100%;
+    padding:12px;
+    background:#1cc5b7;
+    border:none;
+    border-radius:8px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+    <i class="fa-solid fa-arrow-left" onclick="goHome()" style="cursor:pointer;"></i>
+    <h3>Edit Profile</h3>
+</nav>
+
+<div class="profile-box">
+
+    <input type="text" id="username" placeholder="Username">
+
+    <input type="email" id="email" placeholder="Email">
+
+    <input type="text" id="mobile" placeholder="Mobile Number">
+
+    <input type="number" id="age" placeholder="Age">
+
+    <select id="gender">
+        <option value="">Select Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+    </select>
+
+    <button class="btn" onclick="saveProfile()">
+        Save Changes
+    </button>
+
+</div>
+
+<script>
+
+window.onload = function(){
+
+    let user = JSON.parse(localStorage.getItem("smartbusUser"));
+
+    if(user){
+
+        document.getElementById("username").value = user.username || "";
+        document.getElementById("email").value = user.email || "";
+        document.getElementById("mobile").value = user.mobile || "";
+        document.getElementById("age").value = user.age || "";
+        document.getElementById("gender").value = user.gender || "";
+    }
+}
+
+function saveProfile(){
+
+    let updatedUser = {
+        username: document.getElementById("username").value,
+        email: document.getElementById("email").value,
+        mobile: document.getElementById("mobile").value,
+        age: document.getElementById("age").value,
+        gender: document.getElementById("gender").value,
+        password: JSON.parse(localStorage.getItem("smartbusUser")).password
+    };
+
+    localStorage.setItem("smartbusUser", JSON.stringify(updatedUser));
+
+    alert("Profile Updated Successfully");
+}
+
+function goHome(){
+    window.location.href = "home.html";
+}
+
+</script>
+
+</body>
+</html>

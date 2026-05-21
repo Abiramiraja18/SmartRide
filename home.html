@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartBus</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#f2f4f8;
+    padding-bottom:90px;
+}
+
+/* NAVBAR */
+nav{
+    background:#0e2a47;
+    color:white;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* HERO */
+.hero{
+    height:420px;
+    background:linear-gradient(rgba(14,42,71,0.9), rgba(14,42,71,0.9)),
+    url('https://images.unsplash.com/photo-1570125909232-eb263c188f7e');
+    background-size:cover;
+    background-position:center;
+    text-align:center;
+    color:white;
+    padding-top:120px;
+}
+
+.hero h1{
+    font-size:45px;
+    margin-bottom:15px;
+}
+
+.hero p{
+    margin-bottom:25px;
+}
+
+.btn{
+    background:#1cc5b7;
+    padding:12px 25px;
+    border:none;
+    border-radius:8px;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+/* OPTIONS */
+.options{
+    margin-top:-60px;
+    display:flex;
+    justify-content:center;
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    width:120px;
+    text-align:center;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    cursor:pointer;
+}
+
+/* HOW IT WORKS */
+.how{
+    padding:30px 20px;
+    text-align:center;
+}
+
+.step{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:10px;
+    box-shadow:0 3px 8px rgba(0,0,0,0.08);
+    text-align:left;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:white;
+    display:flex;
+    justify-content:space-around;
+    padding:12px 0;
+    box-shadow:0 -2px 8px rgba(0,0,0,0.1);
+    z-index:1000;
+}
+
+/* SIDEBAR */
+.overlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    top:0;
+    left:0;
+    z-index:998;
+}
+
+.sidebar{
+    position:fixed;
+    right:-320px;
+    top:0;
+    width:300px;
+    height:100%;
+    background:white;
+    transition:0.3s;
+    z-index:999;
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar.active{
+    right:0;
+}
+
+.sidebar-header{
+    background:#243b64;
+    color:white;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.sidebar-content{
+    padding:15px;
+}
+
+.menu-item{
+    padding:12px 5px;
+    cursor:pointer;
+}
+
+.menu-item:hover{
+    background:#f2f4f8;
+    border-radius:8px;
+}
+
+.language-option{
+    padding:10px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.language-option.active{
+    background:#bfe2df;
+}
+
+.back{
+    margin-bottom:10px;
+    cursor:pointer;
+    font-size:14px;
+    color:#555;
+}
+
+.switch{
+    position:relative;
+    display:inline-block;
+    width:40px;
+    height:22px;
+}
+
+.switch input{
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.slider{
+    position:absolute;
+    cursor:pointer;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background:#ccc;
+    border-radius:34px;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    height:16px;
+    width:16px;
+    left:3px;
+    bottom:3px;
+    background:white;
+    border-radius:50%;
+    transition:.4s;
+}
+
+input:checked + .slider{
+    background:#0e2a47;
+}
+
+input:checked + .slider:before{
+    transform:translateX(18px);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+
+    <div class="sidebar-header">
+        <span><i class="fa-solid fa-bus"></i> SmartBus</span>
+        <i class="fa-solid fa-xmark" onclick="closeSidebar()"></i>
+    </div>
+
+    <!-- MAIN MENU -->
+    <div class="sidebar-content" id="mainMenu">
+
+        <div class="menu-item" onclick="showLanguage()">
+            <i class="fa-solid fa-globe"></i> Language:
+            <span id="currentLang">English</span>
+        </div>
+
+        <div class="menu-item">
+            <i class="fa-solid fa-circle-question"></i> Help
+        </div>
+
+        <div class="menu-item" onclick="goEditProfile()">
+            <i class="fa-solid fa-user-pen"></i> Edit Profile
+        </div>
+
+        <div class="menu-item" onclick="showSettings()">
+            <i class="fa-solid fa-gear"></i> Settings
+        </div>
+
+        <div class="menu-item" style="color:red;" onclick="logout()">
+            <i class="fa-solid fa-right-from-bracket"></i> Log Out
+        </div>
+
+    </div>
+
+    <!-- LANGUAGE MENU -->
+    <div class="sidebar-content" id="languageMenu" style="display:none;">
+
+        <div class="back" onclick="backToMain()">← Back</div>
+
+        <div class="language-option active" onclick="selectLang(this,'English')">English</div>
+        <div class="language-option" onclick="selectLang(this,'Hindi')">Hindi</div>
+        <div class="language-option" onclick="selectLang(this,'Tamil')">Tamil</div>
+        <div class="language-option" onclick="selectLang(this,'Telugu')">Telugu</div>
+
+    </div>
+
+    <!-- SETTINGS MENU -->
+    <div class="sidebar-content" id="settingsMenu" style="display:none;">
+
+        <div class="back" onclick="backToMain()">← Back</div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span>Notifications</span>
+
+            <label class="switch">
+                <input type="checkbox" checked>
+                <span class="slider"></span>
+            </label>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- NAVBAR -->
+<nav>
+    <h3><i class="fa-solid fa-bus"></i> SmartBus</h3>
+    <i class="fa-solid fa-bars" onclick="openSidebar()"></i>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <h1>SmartBus</h1>
+    <p>Find the fastest bus route to your destination in real time.</p>
+    <button class="btn">Find a Route →</button>
+</div>
+
+<!-- OPTIONS -->
+<div class="options">
+
+    <div class="card" onclick="goRoutes()">
+        <i class="fa-solid fa-location-dot" style="color:#1cc5b7;"></i>
+        <p>Routes</p>
+    </div>
+
+    <div class="card" onclick="goReminders()">
+        <i class="fa-solid fa-clock" style="color:#1cc5b7;"></i>
+        <p>Reminders</p>
+    </div>
+
+    <div class="card" onclick="goComplaints()">
+        <i class="fa-solid fa-comment-dots" style="color:#1cc5b7;"></i>
+        <p>Complaints</p>
+    </div>
+
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how">
+
+    <h3>How it works</h3>
+
+    <div class="step">
+        <strong>1 Detect your location</strong>
+        <p style="color:#666;">We auto-detect where you are</p>
+    </div>
+
+    <div class="step">
+        <strong>2 Enter destination</strong>
+        <p style="color:#666;">Type where you want to go</p>
+    </div>
+
+    <div class="step">
+        <strong>3 Get best routes</strong>
+        <p style="color:#666;">See bus options with timings</p>
+    </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+
+    <div onclick="goHome()" style="color:#1cc5b7; text-align:center;">
+        <i class="fa-solid fa-house"></i>
+        <p style="font-size:12px;">Home</p>
+    </div>
+
+    <div onclick="goRoutes()" style="text-align:center;">
+        <i class="fa-solid fa-route"></i>
+        <p style="font-size:12px;">Routes</p>
+    </div>
+
+    <div onclick="goComplaints()" style="text-align:center;">
+        <i class="fa-solid fa-comment"></i>
+        <p style="font-size:12px;">Complaints</p>
+    </div>
+
+    <div onclick="goReminders()" style="text-align:center;">
+        <i class="fa-solid fa-bell"></i>
+        <p style="font-size:12px;">Reminders</p>
+    </div>
+
+</div>
+
+<script>
+
+function goHome(){
+    window.location.href = "home.html";
+}
+
+function goRoutes(){
+    window.location.href = "routes.html";
+}
+
+function goReminders(){
+    window.location.href = "reminders.html";
+}
+
+function goComplaints(){
+    window.location.href = "complaints.html";
+}
+
+function goEditProfile(){
+    window.location.href = "editprofile.html";
+}
+
+function openSidebar(){
+    document.getElementById("sidebar").classList.add("active");
+    document.getElementById("overlay").style.display="block";
+}
+
+function closeSidebar(){
+    document.getElementById("sidebar").classList.remove("active");
+    document.getElementById("overlay").style.display="none";
+    backToMain();
+}
+
+function showLanguage(){
+    document.getElementById("mainMenu").style.display="none";
+    document.getElementById("languageMenu").style.display="block";
+}
+
+function showSettings(){
+    document.getElementById("mainMenu").style.display="none";
+    document.getElementById("settingsMenu").style.display="block";
+}
+
+function backToMain(){
+    document.getElementById("mainMenu").style.display="block";
+    document.getElementById("languageMenu").style.display="none";
+    document.getElementById("settingsMenu").style.display="none";
+}
+
+function selectLang(el,lang){
+    document.querySelectorAll(".language-option").forEach(opt=>opt.classList.remove("active"));
+    el.classList.add("active");
+    document.getElementById("currentLang").innerText=lang;
+}
+
+function logout(){
+    window.location.href="login.html";
+}
+
+</script>
+
+</body>
+</html>
